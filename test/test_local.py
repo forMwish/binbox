@@ -2,4 +2,5 @@
 import binbox
 
 if __name__ == "__main__":
-    binbox.local("ls test111")
+    ret = binbox.local("ls test111")
+    assert(ret == 0)
