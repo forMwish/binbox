@@ -1,6 +1,9 @@
 import subprocess
 
 def local(command:str):
+    """ 在本地执行命令，并把结果(stdout/stderr)打印
+        如果 stderr 不为空，则返回1，否则返回0
+    """
     ret = subprocess.run(command, shell=True,
                      stdin=subprocess.PIPE,
                      stdout=subprocess.PIPE,

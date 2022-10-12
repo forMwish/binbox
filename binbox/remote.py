@@ -5,6 +5,7 @@ import getpass
 
 class remote:
     """ 提供在远端执行命令，以及本地和远端之间通过 scp 进行文件拷贝的功能
+        执行命令或者拷贝时，如果异常，则打印异常 log 并返回 1
     """
     def __init__(self, hostname, port, user):
         self._ssh = paramiko.SSHClient()
@@ -26,11 +27,25 @@ class remote:
             print(stdout)
         if stderr != "":
             print(stderr)
-        return stdout, stderr
+            return 1
+        return 0
 
     def get(self, remote_path, local_path="", recursive=False):
-        self._scp.get(remote_path, local_path, recursive)
+        try:
+            self._scp.get(remote_path, local_path, recursive)
+        except Exception as err:
+            print(f"[error] {err}")
+            return 1
+        else:
+            return 0
     
     def put(self, files, remote_path=".", recursive=False):
-        self._scp.put(files, remote_path, recursive)
+        try:
+            self._scp.put(files, remote_path, recursive)
+        except Exception as err:
+            print("[error] {err}")
+            return 1
+        else:
+            return 0
+
 
