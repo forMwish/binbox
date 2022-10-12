@@ -1,13 +1,6 @@
 # from binbox import remote
 import binbox
-import subprocess
 
-ret = subprocess.run("ls test", shell=True,
-                     stdin=subprocess.PIPE,
-                     stdout=subprocess.PIPE,
-                     stderr=subprocess.PIPE)
-
-print(ret)
 
 if __name__ == "__main__":
     # 构建 ssh 连接
