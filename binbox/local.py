@@ -11,18 +11,26 @@ def local(command:str):
     """
     command=_tool.command_clear(command)
     print(f"[binbox] local:{command}")
-    ret = subprocess.run(command, shell=True,
+    ret = subprocess.Popen(command, shell=True,
                      stdin=subprocess.PIPE,
                      stdout=subprocess.PIPE,
-                     stderr=subprocess.PIPE)
+                     stderr=subprocess.PIPE, text=True, bufsize=1)
+    for line in ret.stdout:
+        print(line, end="")
+    ret.wait()
+
     if ret.returncode == 0:
-        print(ret.stdout.decode("utf-8"))
+        return ret.stdout
     else:
-        print(ret.stderr.decode("utf-8"))
+        for line in ret.stderr:
+            print(line, end="")
         raise Exception(f"[binbox][error] run \"{command}\" failed")
 
-    return ret.stdout.decode("utf-8")
 
 if __name__ == "__main__":
-    ret = local("ls test111")
+    command="ls -alh test1111"
+    command="find / -name \"*.so\""
+
+    ret = local(command)
+    
     pass
