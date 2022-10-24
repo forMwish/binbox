@@ -1,7 +1,10 @@
 import paramiko
 from scp import SCPClient
 import getpass
-
+try:
+    from . import _tool
+except:
+    import _tool
 
 class remote:
     """ 提供在远端执行命令，以及本地和远端之间通过 scp 进行文件拷贝的功能
@@ -20,6 +23,8 @@ class remote:
         self._scp = SCPClient(self._ssh.get_transport())
 
     def __call__(self, command):
+        command=_tool.command_clear(command)
+        print(f"[binbox] remote:{command}")
         ret = self._ssh.exec_command(command)
         stdout = ret[1].read().decode("utf-8")
         stderr = ret[2].read().decode("utf-8")
@@ -27,25 +32,20 @@ class remote:
             print(stdout)
         if stderr != "":
             print(stderr)
-            return 1
-        return 0
+            raise Exception(f"[binbox][error] run \"{command}\" failed")
 
     def get(self, remote_path, local_path="", recursive=False):
         try:
             self._scp.get(remote_path, local_path, recursive)
         except Exception as err:
             print(f"[error] {err}")
-            return 1
-        else:
-            return 0
+            raise Exception(f"[binbox][error] get file from remote failed")
     
     def put(self, files, remote_path=".", recursive=False):
         try:
             self._scp.put(files, remote_path, recursive)
         except Exception as err:
             print("[error] {err}")
-            return 1
-        else:
-            return 0
+            raise Exception(f"[binbox][error] put file to remote failed")
 
 
