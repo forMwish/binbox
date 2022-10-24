@@ -21,7 +21,7 @@ def local(command:str):
         print(ret.stderr.decode("utf-8"))
         raise Exception(f"[binbox][error] run \"{command}\" failed")
 
-    return ret.stdout
+    return ret.stdout.decode("utf-8")
 
 if __name__ == "__main__":
     ret = local("ls test111")
