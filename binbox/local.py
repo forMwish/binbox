@@ -5,8 +5,10 @@ except:
     import _tool
 
 
-def local(command:str, log=None):
-    """ 在本地执行命令，并把结果(stdout/stderr)打印
+def local(command:str, log=None, logout=True):
+    """ 在本地执行命令, 如果 stderr 非空, 则 raise 异常
+            log: 指向打印的保存路径
+            print: 是否打印到 stdout/stderr
         返回 stdout 
     """
     if log !=None:
@@ -20,7 +22,8 @@ def local(command:str, log=None):
                      stdout=subprocess.PIPE,
                      stderr=subprocess.PIPE, universal_newlines=True, bufsize=1)
     for line in ret.stdout:
-        print(line, end="")
+        if logout:
+            print("stdout:" + line, end="")
         out_list.append(line.strip())
         if log !=None:
             fp.write(line)
@@ -28,12 +31,12 @@ def local(command:str, log=None):
     ret.wait()
     if log !=None:
         fp.close()
-    if ret.returncode == 0:
-        return out_list
-    else:
+    if ret.returncode != 0:
         for line in ret.stderr:
-            print(line, end="")
+            print("stderr:" + line, end="")
         raise Exception(f"[binbox][error] run \"{command}\" failed")
+    else:
+        return out_list
 
 
 if __name__ == "__main__":
