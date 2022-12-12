@@ -23,7 +23,7 @@ def local(command:str, log=None, logout=True):
                      stderr=subprocess.PIPE, universal_newlines=True, bufsize=1)
     for line in ret.stdout:
         if logout:
-            print("stdout:" + line, end="")
+            print(line, end="")
         out_list.append(line.strip())
         if log !=None:
             fp.write(line)
@@ -33,7 +33,7 @@ def local(command:str, log=None, logout=True):
         fp.close()
     if ret.returncode != 0:
         for line in ret.stderr:
-            print("stderr:" + line, end="")
+            print(line, end="")
         raise Exception(f"[binbox][error] run \"{command}\" failed")
     else:
         return out_list
