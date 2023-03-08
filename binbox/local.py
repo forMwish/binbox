@@ -15,7 +15,7 @@ def local(command:str, log=None, logout=True):
         fp = open(log, "w")
 
     command=_tool.command_clear(command)
-    out_list = []
+    out_list = ""
     print(f"[binbox] local:{command}")
     ret = subprocess.Popen(command, shell=True,
                      stdin=subprocess.PIPE,
@@ -24,7 +24,7 @@ def local(command:str, log=None, logout=True):
     for line in ret.stdout:
         if logout:
             print(line, end="")
-        out_list.append(line.strip())
+        out_list += line
         if log !=None:
             fp.write(line)
             fp.flush()
