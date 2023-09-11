@@ -15,25 +15,27 @@ def local(command:str, log=None, logout=True):
         fp = open(log, "w")
 
     command=_tool.command_clear(command)
-    out_list = ""
+    out_list = []
     print(f"[binbox] local:{command}")
-    ret = subprocess.Popen(command, shell=True,
+    process = subprocess.Popen(command, shell=True,
                      stdin=subprocess.PIPE,
                      stdout=subprocess.PIPE,
-                     stderr=subprocess.PIPE, universal_newlines=True, bufsize=1)
-    for line in ret.stdout:
+                     stderr=subprocess.PIPE, universal_newlines=True, bufsize=0)
+    while True:
+        line = process.stdout.readline()
+        if line == '' and process.poll() is not None: 
+            break
         if logout:
-            print(line, end="")
-        out_list += line
-        if log !=None:
+            print(line.strip())
+        out_list.append(line.strip())
+        if log != None:
             fp.write(line)
             fp.flush()
-    ret.wait()
     if log !=None:
         fp.close()
-    if ret.returncode != 0:
-        for line in ret.stderr:
-            print(line, end="")
+    if process.returncode != 0:
+        for line in process.stderr:
+            print(line.strip())
         raise Exception(f"[binbox][error] run \"{command}\" failed")
     else:
         return out_list
