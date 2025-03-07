@@ -1,2 +1,11 @@
-paramiko==2.11.0
-scp==0.14.4
+# 运行时依赖
+paramiko>=2.11.0
+scp>=0.14.4
+psutil>=5.9.0
+torch>=1.7.0
+
+# # 开发依赖（目前不需要）
+# pytest>=7.0.0
+# flake8>=5.0.0
+# mypy>=0.900
+# sphinx>=4.0.0

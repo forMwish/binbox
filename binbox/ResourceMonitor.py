@@ -4,7 +4,13 @@ import os
 import statistics
 import subprocess
 import threading
-import torch
+
+# 条件导入torch
+try:
+    import torch
+    HAS_TORCH = True
+except ImportError:
+    HAS_TORCH = False
 
 class ResourceMonitor:
     """

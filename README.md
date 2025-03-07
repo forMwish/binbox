@@ -2,6 +2,51 @@
 
 这是一个个人 Python 工具仓库，包含各种实用工具和组件，用于简化日常开发和研究工作。
 
+## 安装
+
+### 基本安装
+
+```bash
+pip install .
+```
+
+这将安装基本功能，包括 `remote` 和 `local` 命令执行工具。
+
+### 安装特定功能
+
+BinBox 支持不同的安装选项，以满足不同的需求：
+
+```bash
+# 安装资源监控功能（CPU 和内存监控）
+pip install .[monitor]
+
+# 安装 GPU 监控功能
+pip install .[gpu]
+
+# 安装所有功能
+pip install .[all]
+```
+
+### 开发环境安装
+
+如果您想参与开发或运行测试，可以使用 `requirements.txt` 安装所有依赖（包括开发依赖）：
+
+```bash
+pip install -r requirements.txt
+```
+
+### 从 PyPI 安装（未发布）
+
+```bash
+# 基本安装
+pip install binbox
+
+# 安装特定功能
+pip install binbox[monitor]
+pip install binbox[gpu]
+pip install binbox[all]
+```
+
 ## 工具列表
 
 ### ResourceMonitor
