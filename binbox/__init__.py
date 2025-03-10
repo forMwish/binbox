@@ -6,7 +6,7 @@ BinBox - 个人 Python 工具库
 __version__ = '1.0'
 
 # 基本工具
-from .remote import remote
+from .remote import Remote
 from .local import local
 from .local_v2 import local_v2
 from .color import *
@@ -14,7 +14,7 @@ from ._tool import command_clear
 
 # 资源监控工具 - 条件导入
 try:
-    from .ResourceMonitor import ResourceMonitor
+    from .resource_monitor import ResourceMonitor
 except ImportError:
     # 如果缺少依赖，提供一个占位符类
     class ResourceMonitor:
@@ -26,7 +26,7 @@ except ImportError:
 
 # 设置包的所有导出内容
 __all__ = [
-    'remote',
+    'Remote',
     'local',
     'local_v2',
     'ResourceMonitor',

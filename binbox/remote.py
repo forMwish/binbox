@@ -6,7 +6,7 @@ try:
 except:
     import _tool
 
-class remote:
+class Remote:
     """ 提供在远端执行命令，以及本地和远端之间通过 scp 进行文件拷贝的功能
         执行命令或者拷贝时，如果异常，则打印异常 log 并返回 1
     """
@@ -28,24 +28,27 @@ class remote:
         ret = self._ssh.exec_command(command)
         stdout = ret[1].read().decode("utf-8")
         stderr = ret[2].read().decode("utf-8")
-        if stdout !="":
-            print(stdout)
-        if stderr != "":
+        
+        print(stdout)
+        if stderr:
             print(stderr)
-            raise Exception(f"[binbox][error] run \"{command}\" failed")
+            return 1
+        return stdout
 
     def get(self, remote_path, local_path="", recursive=False):
         try:
-            self._scp.get(remote_path, local_path, recursive)
-        except Exception as err:
-            print(f"[error] {err}")
-            raise Exception(f"[binbox][error] get file from remote failed")
-    
+            self._scp.get(remote_path, local_path, recursive=recursive)
+        except Exception as e:
+            print(e)
+            return 1
+        return 0
+
     def put(self, files, remote_path=".", recursive=False):
         try:
-            self._scp.put(files, remote_path, recursive)
-        except Exception as err:
-            print("[error] {err}")
-            raise Exception(f"[binbox][error] put file to remote failed")
+            self._scp.put(files, remote_path, recursive=recursive)
+        except Exception as e:
+            print(e)
+            return 1
+        return 0
 
 
